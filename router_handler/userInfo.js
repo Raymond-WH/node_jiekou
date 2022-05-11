@@ -2,11 +2,12 @@
 const db = require('../db/index')
 
 
+
 // 获取用户基本信息的处理函数
 exports.getUserInfo = (req, res) => {
   // 根据用户的 id，查询用户的基本信息
   // 注意：为了防止用户的密码泄露，需要排除 password 字段
-  const sql = `select id, username, nickname, user_pic from ev_users where id=?`
+  const sql = `select id, username, nickname,email, user_pic from ev_users where id=?`
   // 注意：req 对象上的 user 属性，是 Token 解析成功，express-jwt 中间件帮我们挂载上去的
   console.log(req.auth)
   db.query(sql, req.auth.id, (err, results) => {
@@ -24,4 +25,10 @@ exports.getUserInfo = (req, res) => {
     })
   })
   // res.send('ok')
+}
+
+
+// 更新用户基本信息的处理函数
+exports.updateUserInfo = (req, res) => { 
+  res.send('ok')
 }
