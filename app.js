@@ -25,7 +25,18 @@ app.use(function (req, res, next) {
 
 // 导入并注册用户路由模块
 const userRouter = require('./router/user');
+// 现在用不了了
+// const joi = require('@hapi/joi')
+// 安装npm i joi 
+const joi = require('joi')
 app.use('/api', userRouter)
+// 定义错误级别的中间件
+app.use((err, req, res, next) => { 
+  // 验证失败导致的错误
+  if (err instanceof joi.ValidationError) return res.cc(err)
+  // 未知的错误
+  res.cc(err)
+})
 // 启动服务器
 app.listen(3000, () => {
   console.log('服务器启动成功，端口号为3000');
