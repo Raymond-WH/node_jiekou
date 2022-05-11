@@ -1,5 +1,8 @@
 // 导入数据库
 const db = require('../db');
+// 导入加密包
+const crypto = require('bcryptjs');
+const bcrypt = require('bcryptjs/dist/bcrypt');
 // 注册用户的处理函数
 exports.register = (req, res) => { 
   // 获取客户端提交的到服务器的用户信息
@@ -34,8 +37,10 @@ exports.register = (req, res) => {
         message: '用户名已被占用'
       })
     }
+    // 调用加密函数，加密密码 bcrypt.hashSync()
+    userInfo.password = bcrypt.hashSync(userInfo.password, 10);
   })
-  // res.send('注册成功') 
+  
 }
 
 // 登录的处理函数
