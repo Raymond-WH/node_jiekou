@@ -44,10 +44,11 @@ exports.register = (req, res) => {
     db.query(sqlInsert, {username:userInfo.username,password:userInfo.password}, (err, results) => { 
       // 执行sql语句失败
       if (err) { 
-        return res.send({
-          status: 1,
-          message:err.message
-        })
+        // return res.send({
+        //   status: 1,
+        //   message:err.message
+        // })
+        return res.cc(err)
       }
       // SQL 语句执行成功，但影响行数不为 1
       if (results.affectedRows !== 1) {
