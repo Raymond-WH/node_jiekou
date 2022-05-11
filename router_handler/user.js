@@ -19,6 +19,8 @@ exports.register = (req, res) => {
 
   // 定义sql语句，查询用户名是否被占用
   const sql = `SELECT * FROM ev_users WHERE username=?`;
+  // 定义插入用户的sql语句
+  const sqlInsert = `INSERT INTO ev_users SET ?`;
   // 执行sql语句
   db.query(sql, [userInfo.username], (err, results) => { 
     // console.log(err);
@@ -39,6 +41,21 @@ exports.register = (req, res) => {
     }
     // 调用加密函数，加密密码 bcrypt.hashSync()
     userInfo.password = bcrypt.hashSync(userInfo.password, 10);
+    db.query(sqlInsert, {username:userInfo.username,password:userInfo.password}, (err, results) => { 
+      // 执行sql语句失败
+      if (err) { 
+        return res.send({
+          status: 1,
+          message:err.message
+        })
+      }
+      // SQL 语句执行成功，但影响行数不为 1
+      if (results.affectedRows !== 1) {
+        return res.send({ status: 1, message: '注册用户失败，请稍后再试！' })
+      }
+      // 注册成功
+      return res.send({ status: 0, message: '注册成功！' })
+    })
   })
   
 }
