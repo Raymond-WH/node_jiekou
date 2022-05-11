@@ -45,6 +45,11 @@ const userRouter = require('./router/user');
 const joi = require('joi')
 app.use('/api', userRouter)
 
+// 导入用户信息路由模块
+const userInfoRouter = require('./router/userInfo');
+// 以 / my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
+app.use('/my', userInfoRouter)
+
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
   console.log(err);
