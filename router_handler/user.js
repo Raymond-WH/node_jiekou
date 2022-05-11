@@ -63,5 +63,26 @@ exports.register = (req, res) => {
 
 // 登录的处理函数
 exports.login = (req, res) => { 
-  res.send('登录成功')
+  // 接受表单数据
+  // console.log(req.body);
+  const userInfo = req.body;
+  // 定义sql语句
+  const sql = `SELECT * FROM ev_users WHERE username=?`;
+  db.query(sql, userInfo.username, (err, results)=> {
+    console.log(results);
+    // 执行 SQL 语句失败
+    if (err) return res.cc(err)
+    // 执行 SQL 语句成功，但是查询到数据条数不等于 1
+    if (results.length !== 1) return res.cc('登录失败！')
+    // TODO：判断用户输入的登录密码是否和数据库中的密码一致
+    // bcrypt.compareSync(用户提交的密码，数据库的密码)
+    // console.log(results[0].password);
+    const compareResult = bcrypt.compareSync(userInfo.password, results[0].password);
+    // 如果对比的结果等于false证明用户输入密码错误
+    if (!compareResult) return res.cc('登录失败！')
+    // 在服务器端生成jwt token字符串
+    
+    res.send('ok')
+  })
+  
 }

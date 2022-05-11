@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/register', expressJoi(reg_login_schema),useHandler.register)
 
 // 登录
-router.post('/login', useHandler.login)
+router.post('/login', expressJoi(reg_login_schema), useHandler.login)
 
 // 将路由对象共享出去
 module.exports = router;
