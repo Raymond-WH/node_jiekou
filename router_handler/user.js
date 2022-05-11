@@ -3,8 +3,15 @@ const db = require('../db');
 // 导入加密包
 const bcrypt = require('bcryptjs');
 // const bcrypt = require('bcryptjs/dist/bcrypt');
+
+// 导入token包
+const jwt = require('jsonwebtoken');
+
+// 导入全局的配置文件
+const config = require('../config');
+
 // 注册用户的处理函数
-exports.register = (req, res) => { 
+exports.register = (req, res) => {
   // 获取客户端提交的到服务器的用户信息
   const userInfo = req.body;
   // console.log(req);
@@ -20,18 +27,18 @@ exports.register = (req, res) => {
   // 定义sql语句，查询用户名是否被占用
   const sql = `SELECT * FROM ev_users WHERE username=?`;
   // 执行sql语句
-  db.query(sql, [userInfo.username], (err, results) => { 
+  db.query(sql, [userInfo.username], (err, results) => {
     // console.log(err);
     // console.log(results);
     // 执行语句失败
-    if (err) { 
+    if (err) {
       return res.send({
         status: 1,
-        message:err.message
+        message: err.message
       })
     }
     // 用户名已被占用
-    if (results.length > 0) { 
+    if (results.length > 0) {
       return res.send({
         status: 1,
         message: '用户名已被占用'
@@ -41,9 +48,9 @@ exports.register = (req, res) => {
     const sqlInsert = `INSERT INTO ev_users SET ?`;
     // 调用加密函数，加密密码 bcrypt.hashSync()
     userInfo.password = bcrypt.hashSync(userInfo.password, 10);
-    db.query(sqlInsert, {username:userInfo.username,password:userInfo.password}, (err, results) => { 
+    db.query(sqlInsert, { username: userInfo.username, password: userInfo.password }, (err, results) => {
       // 执行sql语句失败
-      if (err) { 
+      if (err) {
         // return res.send({
         //   status: 1,
         //   message:err.message
@@ -58,18 +65,18 @@ exports.register = (req, res) => {
       return res.send({ status: 0, message: '注册成功！' })
     })
   })
-  
+
 }
 
 // 登录的处理函数
-exports.login = (req, res) => { 
+exports.login = (req, res) => {
   // 接受表单数据
   // console.log(req.body);
   const userInfo = req.body;
   // 定义sql语句
   const sql = `SELECT * FROM ev_users WHERE username=?`;
-  db.query(sql, userInfo.username, (err, results)=> {
-    console.log(results);
+  db.query(sql, userInfo.username, (err, results) => {
+    // console.log(results);
     // 执行 SQL 语句失败
     if (err) return res.cc(err)
     // 执行 SQL 语句成功，但是查询到数据条数不等于 1
@@ -81,8 +88,17 @@ exports.login = (req, res) => {
     // 如果对比的结果等于false证明用户输入密码错误
     if (!compareResult) return res.cc('登录失败！')
     // 在服务器端生成jwt token字符串
-    
-    res.send('ok')
+    const user = { ...results[0], password: 'undefined', user_pic: '' };
+    // 对用户信息进行加密处理，生成token字符串
+    const token = jwt.sign(user, config.jwtSecretKey, {
+      expiresIn: config.expiresIn // 有效期1小时
+    })
+    // 调用res.send()将token字符串返回给客户端
+    res.send({
+      status: 0,
+      message: '登录成功！',
+      token: 'Bearer ' + token
+    })
   })
-  
+
 }
