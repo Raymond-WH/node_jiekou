@@ -105,7 +105,19 @@ exports.updateCateById = (req, res) => {
     if (results.length === 1 && results[0].alias === req.body.alias) return res.cc('分类别名被占用，请更换后重试！')
 
     // TODO：更新文章分类
-    res.send('ok')
+    const sql = `update ev_article_cate set ? where Id=?`
+    db.query(sql, [req.body, req.body.Id], (err, results) => {
+      // 执行 SQL 语句失败
+      if (err) return res.cc(err)
+
+      // SQL 语句执行成功，但是影响行数不等于 1
+      if (results.affectedRows !== 1) return res.cc('更新文章分类失败！')
+
+      // 更新文章分类成功
+      res.cc('更新文章分类成功！', 0)
+    })
+
+    // res.send('ok')
   })
   
 }
