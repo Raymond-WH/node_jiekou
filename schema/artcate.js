@@ -38,3 +38,4 @@ exports.update_cate_schema = {
     alias,
   },
 }
+

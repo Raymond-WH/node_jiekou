@@ -53,6 +53,12 @@ app.use('/my', userInfoRouter)
 // 文章分类路由模块
 const artCateRouter = require('./router/artCate');
 app.use('/my/article', artCateRouter)
+
+// 导入并使用文章路由模块
+const articleRouter = require('./router/article')
+// 为文章的路由挂载统一的访问前缀 /my/article
+app.use('/my/article', articleRouter)
+
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
   console.log(err);
