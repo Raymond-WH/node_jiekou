@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 
 // 导入用户信息处理函数
-const userInfoHandler = require('../router_handler/userInfo')
+const userInfoHandler = require('../router_handler/userInfo.js')
 
 // 导入验证数据合法性的中间件
 const expressJoi = require('@escook/express-joi')
@@ -21,7 +21,7 @@ router.post('/userinfo', expressJoi(update_userinfo_schema), userInfoHandler.upd
 
 
 // 导入密码验证规则
-const {update_password_schema } = require('../schema/user')
+const {update_password_schema } = require('../schema/user.js')
 // 更新密码
 router.post('/updatepwd', expressJoi(update_password_schema),userInfoHandler.updatePwd)
 

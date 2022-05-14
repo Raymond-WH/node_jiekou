@@ -1,5 +1,5 @@
 // 导入db
-const db = require('../db/index')
+const db = require('../db/index.js')
 // 导入处理路径的 path 核心模块
 const path = require('path')
 // 发布新文章的处理函数

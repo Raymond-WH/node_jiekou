@@ -1,5 +1,5 @@
 // 导入数据库
-const db = require('../db/index')
+const db = require('../db/index.js')
 
 exports.getArticleCates = (req, res) => { 
   // 根据分类的状态，获取所有未被删除的分类列表数据

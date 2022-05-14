@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // 导入全局的配置文件
-const config = require('../config');
+const config = require('../config.js');
 
 // 注册用户的处理函数
 exports.register = (req, res) => {

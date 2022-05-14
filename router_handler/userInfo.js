@@ -1,5 +1,5 @@
 // 导入数据库模块
-const db = require('../db/index')
+const db = require('../db/index.js')
 
 const bcrypt = require('bcryptjs')
 

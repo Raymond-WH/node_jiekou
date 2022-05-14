@@ -10,7 +10,7 @@ app.use(cors());
 
 
 // 配置解析表单数据的中间件,配置解析 `application/x-www-form-urlencoded`
-app.use(express.urlencoded({ ecxtended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 // 托管静态资源文件
 app.use('/uploads', express.static('./uploads'))
@@ -31,7 +31,7 @@ app.use(function (req, res, next) {
 
 // 一定要在路由配置之前解析token中间件
 // 导入配置文件
-const config = require('./config');
+const config = require('./config.js');
 
 // 解析token的中间件
 const {expressjwt:jwt} = require('express-jwt');
@@ -41,7 +41,7 @@ app.use(jwt({
  }).unless({path:[/^\/api\//]}))
 
 // 导入并注册用户路由模块
-const userRouter = require('./router/user');
+const userRouter = require('./router/user.js');
 // 现在用不了了
 // const joi = require('@hapi/joi')
 // 安装npm i joi 
@@ -49,16 +49,16 @@ const joi = require('joi')
 app.use('/api', userRouter)
 
 // 导入用户信息路由模块
-const userInfoRouter = require('./router/userInfo');
+const userInfoRouter = require('./router/userInfo.js');
 // 以 / my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
 app.use('/my', userInfoRouter)
 
 // 文章分类路由模块
-const artCateRouter = require('./router/artCate');
+const artCateRouter = require('./router/artCate.js');
 app.use('/my/article', artCateRouter)
 
 // 导入并使用文章路由模块
-const articleRouter = require('./router/article')
+const articleRouter = require('./router/article.js')
 // 为文章的路由挂载统一的访问前缀 /my/article
 app.use('/my/article', articleRouter)
 

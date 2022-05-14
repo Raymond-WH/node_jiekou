@@ -1,7 +1,7 @@
 const expressJoi = require('@escook/express-joi')
 const express = require('express')
 const router = express.Router()
-const artcate_handler = require('../router_handler/artcate')
+const artcate_handler = require('../router_handler/artcate.js')
 const { delete_cate_schema, add_cate_schema, get_cate_schema, update_cate_schema } = require('../schema/artcate')
 // 文章分类的列表数据
 router.get('/cates', artcate_handler.getArticleCates)
