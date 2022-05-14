@@ -54,7 +54,7 @@ const userInfoRouter = require('./router/userInfo.js');
 app.use('/my', userInfoRouter)
 
 // 文章分类路由模块
-const artCateRouter = require('./router/artCate.js');
+const artCateRouter = require('./router/artcate.js');
 app.use('/my/article', artCateRouter)
 
 // 导入并使用文章路由模块
